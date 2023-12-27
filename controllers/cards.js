@@ -7,7 +7,7 @@ module.exports.getCards = async (req, res, next) => {
   await Cards.find({})
     .then((cards) => res.send({ data: cards }))
     .catch(() => {
-      next(new DefaultError('Ошибка по умолчанию'));
+      next(new DefaultError({ messsage: 'Ошибка по умолчанию' }));
     });
 };
 
@@ -22,9 +22,9 @@ module.exports.createCard = async (req, res, next) => {
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError('Переданы некорректные данные при создании пользователя');
+        throw new ValidationError({ messsage: 'Переданы некорректные данные при создании пользователя' });
       } else {
-        next(new DefaultError('Ошибка по умолчанию'));
+        next(new DefaultError({ messsage: 'Ошибка по умолчанию' }));
       }
     });
 };
@@ -33,7 +33,7 @@ module.exports.deleteCardById = async (req, res, next) => {
   await Cards.findByIdAndDelete(req.params.cardId)
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Карточка с указанным _id не найдена');
+        throw new NotFoundError({ messsage: 'Карточка с указанным _id не найдена' });
       } else if (card.owner.toString() === req.user._id) {
         res.send(card);
       }
@@ -49,16 +49,16 @@ module.exports.likeCard = async (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Передан несуществующий _id карточки');
+        throw new NotFoundError({ messsage: 'Передан несуществующий _id карточки' });
       } else {
         res.send({ data: card });
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные для постановки/снятии лайка'));
+        next(new ValidationError({ messsage: 'Переданы некорректные данные для постановки/снятии лайка' }));
       } else {
-        next(new DefaultError('Ошибка по умолчанию'));
+        next(new DefaultError({ messsage: 'Ошибка по умолчанию' }));
       }
     });
 };
@@ -71,16 +71,16 @@ module.exports.dislikeCard = async (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        throw new NotFoundError('Передан несуществующий _id карточки');
+        throw new NotFoundError({ messsage: 'Передан несуществующий _id карточки' });
       } else {
         res.send({ data: card });
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные для постановки/снятии лайка'));
+        next(new ValidationError({ messsage: 'Переданы некорректные данные для постановки/снятии лайка' }));
       } else {
-        next(new DefaultError('Ошибка по умолчанию'));
+        next(new DefaultError({ messsage: 'Ошибка по умолчанию' }));
       }
     });
 };
