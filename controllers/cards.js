@@ -1,7 +1,7 @@
+const Cards = require('../models/card');
 const DefaultError = require('../errors/defaultError');
 const NotFoundError = require('../errors/notFoundError');
 const ValidationError = require('../errors/validationError');
-const Cards = require('../models/card');
 
 module.exports.getCards = async (req, res, next) => {
   await Cards.find({})

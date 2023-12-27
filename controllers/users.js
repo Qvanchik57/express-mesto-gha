@@ -1,7 +1,7 @@
+const Users = require('../models/user');
 const DefaultError = require('../errors/defaultError');
 const NotFoundError = require('../errors/notFoundError');
 const ValidationError = require('../errors/validationError');
-const Users = require('../models/user');
 
 module.exports.getUsers = async (req, res, next) => {
   await Users.find({})
@@ -21,7 +21,7 @@ module.exports.getUsersById = async (req, res, next) => {
       }
     })
     .catch(() => {
-      next(new DefaultError({ messsage: 'Ошибка по умолчанию' }));
+      next(new DefaultError('Ошибка по умолчанию'));
     });
 };
 
