@@ -15,14 +15,14 @@ module.exports.getUsers = async (req, res, next) => {
 module.exports.getUsersById = async (req, res, next) => {
   await Users.findById(req.params.userId)
     .then((user) => {
-      if (!user) {
-        res.status(NOTFOUND_ERROR_CODE).send({ messsage: 'Пользователь по указанному _id не найден' });
-      } else {
-        next(res.send(user));
-      }
+      res.send(user);
     })
-    .catch(() => {
-      next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(res.status(NOTFOUND_ERROR_CODE).send({ messsage: 'Пользователь по указанному _id не найден' }));
+      } else {
+        next(res.status(DEFAULT_ERROR_CODE).send({ messsage: 'Ошибка по умолчанию' }));
+      }
     });
 };
 
@@ -32,7 +32,6 @@ module.exports.createUser = async (req, res, next) => {
   await Users.create({ name, about, avatar })
     .then(() => res.send({ data: name, about, avatar }))
     .catch((err) => {
-      res.send(err.name);
       if (err.name === 'ValidationError') {
         next(res.status(VALIDATION_ERROR_CODE).send({ messsage: 'Переданы некорректные данные при создании пользователя' }));
       } else {
@@ -52,14 +51,12 @@ module.exports.patchProfile = async (req, res, next) => {
     },
   )
     .then((user) => {
-      if (!user) {
-        res.status(NOTFOUND_ERROR_CODE).send({ messsage: 'Пользователь с указанным _id не найден' });
-      } else {
-        next(res.send(user));
-      }
+      next(res.send(user));
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
+        res.status(NOTFOUND_ERROR_CODE).send({ messsage: 'Пользователь с указанным _id не найден' });
+      } else if (err.name === 'ValidationError') {
         next(res.status(VALIDATION_ERROR_CODE).send({ messsage: 'Переданы некорректные данные при обновлении профиля' }));
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ messsage: 'Ошибка по умолчанию' }));
@@ -78,14 +75,12 @@ module.exports.patchAvatar = async (req, res, next) => {
     },
   )
     .then((user) => {
-      if (!user) {
-        res.status(NOTFOUND_ERROR_CODE).send({ messsage: 'Пользователь с указанным _id не найден' });
-      } else {
-        next(res.send(user));
-      }
+      next(res.send(user));
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
+        res.status(NOTFOUND_ERROR_CODE).send({ messsage: 'Пользователь с указанным _id не найден' });
+      } else if (err.name === 'ValidationError') {
         next(res.status(VALIDATION_ERROR_CODE).send({ messsage: 'Переданы некорректные данные при обновлении профиля' }));
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ messsage: 'Ошибка по умолчанию' }));

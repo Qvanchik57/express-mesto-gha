@@ -22,7 +22,7 @@ module.exports.createCard = async (req, res, next) => {
     .then((card) => res.send({ data: card }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        throw new ValidationError({ messsage: 'Переданы некорректные данные при создании пользователя' });
+        throw new ValidationError({ messsage: 'Переданы некорректные данные при создании карточки' });
       } else {
         next(new DefaultError({ messsage: 'Ошибка по умолчанию' }));
       }
@@ -32,13 +32,15 @@ module.exports.createCard = async (req, res, next) => {
 module.exports.deleteCardById = async (req, res, next) => {
   await Cards.findByIdAndDelete(req.params.cardId)
     .then((card) => {
-      if (!card) {
-        throw new NotFoundError({ messsage: 'Карточка с указанным _id не найдена' });
-      } else if (card.owner.toString() === req.user._id) {
+      if (card.owner.toString() === req.user._id) {
         res.send(card);
       }
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        throw new NotFoundError({ messsage: 'Карточка с указанным _id не найдена' });
+      }
+    });
 };
 
 module.exports.likeCard = async (req, res, next) => {
