@@ -18,12 +18,12 @@ module.exports.getUsersById = async (req, res, next) => {
       res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        next(res.status(NOTFOUND_ERROR_CODE).send({ message: 'Пользователь по указанному _id не найден' }));
-      } else if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError') {
         next(res.status(VALIDATION_ERROR_CODE).send({
-          message: 'Переданы некорректные данные при создании пользователя',
+          message: 'Переданы некорректные данные при поиске пользователя',
         }));
+      } else if (err.name === 'CastError') {
+        res.status(NOTFOUND_ERROR_CODE).send({ messsge: 'Пользователь с указанным _id не найден' });
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
       }
@@ -60,10 +60,12 @@ module.exports.patchProfile = async (req, res, next) => {
       next(res.send(user));
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
+        next(res.status(VALIDATION_ERROR_CODE).send({
+          message: 'Переданы некорректные данные при обновлении профиля',
+        }));
+      } else if (err.name === 'CastError') {
         res.status(NOTFOUND_ERROR_CODE).send({ messsge: 'Пользователь с указанным _id не найден' });
-      } else if (err.name === 'ValidationError') {
-        next(res.status(VALIDATION_ERROR_CODE).send({ message: 'Переданы некорректные данные при обновлении профиля' }));
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
       }
@@ -84,10 +86,12 @@ module.exports.patchAvatar = async (req, res, next) => {
       next(res.send(user));
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        res.status(NOTFOUND_ERROR_CODE).send({ message: 'Пользователь с указанным _id не найден' });
-      } else if (err.name === 'ValidationError') {
-        next(res.status(VALIDATION_ERROR_CODE).send({ message: 'Переданы некорректные данные при обновлении профиля' }));
+      if (err.name === 'ValidationError') {
+        next(res.status(VALIDATION_ERROR_CODE).send({
+          message: 'Переданы некорректные данные при обновлении аватара',
+        }));
+      } else if (err.name === 'CastError') {
+        res.status(NOTFOUND_ERROR_CODE).send({ messsge: 'Пользователь с указанным _id не найден' });
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
       }
