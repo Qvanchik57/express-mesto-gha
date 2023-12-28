@@ -17,14 +17,13 @@ module.exports.getUsersById = async (req, res, next) => {
     .then((user) => {
       if (!user) {
         res.status(NOTFOUND_ERROR_CODE).send({ messsge: 'Пользователь с указанным _id не найден' });
-      } else {
-        next(res.send(user));
       }
+      next(res.send({ data: user }));
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         res.status(VALIDATION_ERROR_CODE).send({
-          message: 'Переданы некорректные данные при поиске пользователя',
+          message: 'Переданы некорректные данные при обновлении профиля',
         });
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
