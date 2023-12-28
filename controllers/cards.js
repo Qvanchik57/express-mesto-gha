@@ -41,7 +41,7 @@ module.exports.deleteCardById = async (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(res.status(VALIDATION_ERROR_CODE).send({ message: 'Переданы некорректные данные при создании карточки' }));
+        res.status(VALIDATION_ERROR_CODE).send({ message: 'Переданы некорректные данные при создании карточки' });
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
       }
@@ -56,13 +56,13 @@ module.exports.likeCard = async (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        next(res.status(NOTFOUND_ERROR_CODE).send({ message: 'Передан несуществующий _id карточки' }));
+        res.status(NOTFOUND_ERROR_CODE).send({ message: 'Передан несуществующий _id карточки' });
       }
-      res.send({ data: card });
+      next(res.send({ data: card }));
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(res.status(VALIDATION_ERROR_CODE).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' }));
+        res.status(VALIDATION_ERROR_CODE).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
       }
@@ -77,13 +77,13 @@ module.exports.dislikeCard = async (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        next(res.status(NOTFOUND_ERROR_CODE).send({ message: 'Передан несуществующий _id карточки' }));
+        res.status(NOTFOUND_ERROR_CODE).send({ message: 'Передан несуществующий _id карточки' });
       }
-      res.send({ data: card });
+      next(res.send({ data: card }));
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(res.status(VALIDATION_ERROR_CODE).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' }));
+        res.status(VALIDATION_ERROR_CODE).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' });
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
       }
