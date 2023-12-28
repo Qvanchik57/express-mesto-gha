@@ -6,7 +6,7 @@ const NOTFOUND_ERROR_CODE = 404;
 
 module.exports.getUsers = async (req, res, next) => {
   await Users.find({})
-    .then((users) => res.send({ data: users }))
+    .then((users) => res.status(200).send({ data: users }))
     .catch(() => {
       next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
     });
@@ -17,8 +17,9 @@ module.exports.getUsersById = async (req, res, next) => {
     .then((user) => {
       if (!user) {
         res.status(NOTFOUND_ERROR_CODE).send({ message: 'Пользователь с указанным _id не найден' });
+        return;
       }
-      next(res.send({ data: user }));
+      res.status(200).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -35,7 +36,7 @@ module.exports.createUser = async (req, res, next) => {
   const { name, about, avatar } = req.body;
 
   await Users.create({ name, about, avatar })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(VALIDATION_ERROR_CODE).send({
@@ -58,13 +59,15 @@ module.exports.patchProfile = async (req, res, next) => {
     },
   )
     .then((user) => {
+      res.send(res.status);
       if (!user) {
         res.status(NOTFOUND_ERROR_CODE).send({ message: 'Пользователь с указанным _id не найден' });
+        return;
       }
-      next(res.send(user));
+      res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         res.status(VALIDATION_ERROR_CODE).send({
           message: 'Переданы некорректные данные при обновлении профиля',
         });
@@ -88,10 +91,10 @@ module.exports.patchAvatar = async (req, res, next) => {
       if (!user) {
         res.status(NOTFOUND_ERROR_CODE).send({ message: 'Пользователь с указанным _id не найден' });
       }
-      next(res.send(user));
+      res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         res.status(VALIDATION_ERROR_CODE).send({
           message: 'Переданы некорректные данные при обновлении профиля',
         });
