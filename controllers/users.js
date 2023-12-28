@@ -64,7 +64,7 @@ module.exports.patchProfile = async (req, res, next) => {
       next(res.send(user));
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         res.status(VALIDATION_ERROR_CODE).send({
           message: 'Переданы некорректные данные при обновлении профиля',
         });
@@ -91,7 +91,7 @@ module.exports.patchAvatar = async (req, res, next) => {
       next(res.send(user));
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         res.status(VALIDATION_ERROR_CODE).send({
           message: 'Переданы некорректные данные при обновлении профиля',
         });
