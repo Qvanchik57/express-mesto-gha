@@ -33,7 +33,7 @@ module.exports.createUser = async (req, res, next) => {
     .then(() => res.send({ data: name, about, avatar }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(res.status(VALIDATION_ERROR_CODE).send({ messsage: 'Переданы некорректные данные при создании пользователя' }));
+        next(res.status(VALIDATION_ERROR_CODE).send());
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ messsage: 'Ошибка по умолчанию' }));
       }
