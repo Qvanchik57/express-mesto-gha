@@ -35,13 +35,13 @@ module.exports.deleteCardById = async (req, res, next) => {
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
         res.send(card);
+      } else {
+        next(res.status(NOTFOUND_ERROR_CODE).send({ message: 'Передан несуществующий _id карточки' }));
       }
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(res.status(VALIDATION_ERROR_CODE).send({ message: 'Переданы некорректные данные при создании карточки' }));
-      } else if (err.name === 'CastError') {
-        next(res.status(NOTFOUND_ERROR_CODE).send({ message: 'Передан несуществующий _id карточки' }));
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
       }
@@ -55,13 +55,14 @@ module.exports.likeCard = async (req, res, next) => {
     { new: true },
   )
     .then((card) => {
+      if (!card) {
+        next(res.status(NOTFOUND_ERROR_CODE).send({ message: 'Передан несуществующий _id карточки' }));
+      }
       res.send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(res.status(VALIDATION_ERROR_CODE).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' }));
-      } else if (err.name === 'CastError') {
-        next(res.status(NOTFOUND_ERROR_CODE).send({ message: 'Передан несуществующий _id карточки' }));
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
       }
@@ -75,13 +76,14 @@ module.exports.dislikeCard = async (req, res, next) => {
     { new: true },
   )
     .then((card) => {
+      if (!card) {
+        next(res.status(NOTFOUND_ERROR_CODE).send({ message: 'Передан несуществующий _id карточки' }));
+      }
       res.send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(res.status(VALIDATION_ERROR_CODE).send({ message: 'Переданы некорректные данные для постановки/снятии лайка' }));
-      } else if (err.name === 'CastError') {
-        next(res.status(NOTFOUND_ERROR_CODE).send({ message: 'Передан несуществующий _id карточки' }));
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
       }

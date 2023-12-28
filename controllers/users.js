@@ -15,15 +15,17 @@ module.exports.getUsers = async (req, res, next) => {
 module.exports.getUsersById = async (req, res, next) => {
   await Users.findById(req.params.userId)
     .then((user) => {
-      res.send(user);
+      if (!user) {
+        res.status(NOTFOUND_ERROR_CODE).send({ messsge: 'Пользователь с указанным _id не найден' });
+      } else {
+        next(res.send(user));
+      }
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(res.status(VALIDATION_ERROR_CODE).send({
           message: 'Переданы некорректные данные при поиске пользователя',
         }));
-      } else if (err.name === 'CastError') {
-        res.status(NOTFOUND_ERROR_CODE).send({ messsge: 'Пользователь с указанным _id не найден' });
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ message: 'Ошибка по умолчанию' }));
       }
