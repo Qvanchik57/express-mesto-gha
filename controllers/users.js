@@ -37,7 +37,7 @@ module.exports.createUser = async (req, res, next) => {
   await Users.create({ name, about, avatar })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         res.status(VALIDATION_ERROR_CODE).send({
           message: 'Переданы некорректные данные при создании пользователя',
         });
@@ -59,9 +59,9 @@ module.exports.patchProfile = async (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        next(res.status(NOTFOUND_ERROR_CODE).send({ message: 'Пользователь с указанным _id не найден' }));
+        res.status(NOTFOUND_ERROR_CODE).send({ message: 'Пользователь с указанным _id не найден' });
       }
-      res.send(user);
+      next(res.send(user));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -86,9 +86,9 @@ module.exports.patchAvatar = async (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        next(res.status(NOTFOUND_ERROR_CODE).send({ message: 'Пользователь с указанным _id не найден' }));
+        res.status(NOTFOUND_ERROR_CODE).send({ message: 'Пользователь с указанным _id не найден' });
       }
-      res.send(user);
+      next(res.send(user));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
