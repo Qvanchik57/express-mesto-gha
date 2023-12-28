@@ -66,7 +66,7 @@ module.exports.patchProfile = async (req, res, next) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         res.status(VALIDATION_ERROR_CODE).send({
           message: 'Переданы некорректные данные при обновлении профиля',
         });
