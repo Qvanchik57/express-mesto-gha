@@ -30,10 +30,12 @@ module.exports.createUser = async (req, res, next) => {
   const { name, about, avatar } = req.body;
 
   await Users.create({ name, about, avatar })
-    .then(() => res.send({ data: name, about, avatar }))
+    .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(res.status(VALIDATION_ERROR_CODE).send());
+        next(res.status(VALIDATION_ERROR_CODE).send({
+          messsage: 'Переданы некорректные данные при создании пользователя',
+        }));
       } else {
         next(res.status(DEFAULT_ERROR_CODE).send({ messsage: 'Ошибка по умолчанию' }));
       }
