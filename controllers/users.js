@@ -59,7 +59,6 @@ module.exports.patchProfile = async (req, res, next) => {
     },
   )
     .then((user) => {
-      res.send(res.status);
       if (!user) {
         res.status(NOTFOUND_ERROR_CODE).send({ message: 'Пользователь с указанным _id не найден' });
         return;

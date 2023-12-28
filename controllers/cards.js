@@ -33,10 +33,10 @@ module.exports.createCard = async (req, res, next) => {
 module.exports.deleteCardById = async (req, res, next) => {
   await Cards.findByIdAndDelete(req.params.cardId)
     .then((card) => {
-      if (card.owner.toString() === req.user._id) {
-        res.send(card);
-      } else {
+      if (!card) {
         next(res.status(NOTFOUND_ERROR_CODE).send({ message: 'Передан несуществующий _id карточки' }));
+      } else if (card.owner.toString() === req.user._id) {
+        res.send(card);
       }
     })
     .catch((err) => {
