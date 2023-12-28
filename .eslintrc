@@ -10,8 +10,7 @@
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint",
-        "react"
+        "@typescript-eslint"
     ],
     "rules": {
       "no-underscore-dangle": ["error",{"allow":["_id"]}]
