@@ -12,7 +12,7 @@ router.get('/users', getUsers);
 
 router.get('/users/:userId', userIdValidation, getUsersById);
 
-router.get('/users/me', getThisUser);
+router.get('/users/me', userIdValidation, getThisUser);
 
 router.patch('/users/me', userValidation, patchProfile);
 
