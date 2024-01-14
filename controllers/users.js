@@ -111,8 +111,11 @@ module.exports.patchAvatar = async (req, res, next) => {
     });
 };
 
+let emailThisUser = '';
+
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
+  emailThisUser = email;
 
   return Users.findUserByCredentials(email, password)
     .then((user) => {
@@ -127,7 +130,7 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.getThisUser = (req, res, next) => {
-  Users.findById(req.user._id)
+  Users.findByOne(emailThisUser)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');

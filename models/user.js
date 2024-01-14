@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const isEmail = require('validator/lib/isEmail');
-const isUrl = require('validator/lib/isURL');
+// const isUrl = require('validator/lib/isURL');
 const NotAuthError = require('../errors/notAuthError');
 
 const userSchema = new mongoose.Schema({
@@ -20,10 +20,10 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     default: 'chrome://favicon2/?size=24&scaleFactor=1x&showFallbackMonogram=&pageUrl=https%3A%2F%2Fpracticum.yandex.ru%2Fprofile%2Fweb%2F',
-    validate: {
-      validator: (url) => isUrl(url),
-      message: 'Неправильный формат ссылки',
-    },
+    // validate: {
+    //   validator: (url) => isUrl(url),
+    //   message: 'Неправильный формат ссылки',
+    // },
   },
   email: {
     type: String,
