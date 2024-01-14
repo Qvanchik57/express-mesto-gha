@@ -136,7 +136,7 @@ module.exports.getThisUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
-      res.status(201).send({ user });
+      res.status(200).send({ user });
     })
     .catch(next);
 };
