@@ -48,7 +48,7 @@ module.exports.createUser = (req, res, next) => {
       password: hash,
     }))
     .then(() => res.status(201).send({
-      data: name, about, avatar, email,
+      name, about, avatar, email,
     }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -121,10 +121,6 @@ module.exports.login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '7d' },
       );
-      res.cookie('jwt', token, {
-        maxAge: '7d',
-        httpOnly: true,
-      });
       res.send({ token });
     })
     .catch(next);

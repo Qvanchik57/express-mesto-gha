@@ -29,6 +29,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb')
 app.use('/signin', authValidation, login);
 app.use('/signup', regValidation, createUser);
 
+app.use('/', auth, usersRouter);
+app.use('/', auth, cardsRouter);
 app.use('/', (req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
 });
@@ -44,9 +46,5 @@ app.use((err, req, res, next) => {
   });
   next();
 });
-
-app.use(auth);
-app.use('/', usersRouter);
-app.use('/', cardsRouter);
 
 app.listen(PORT);
