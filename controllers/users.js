@@ -111,14 +111,14 @@ module.exports.patchAvatar = async (req, res, next) => {
     });
 };
 
-let emailThisUser = '';
+let idThisUser = '';
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-  emailThisUser = email;
 
   return Users.findUserByCredentials(email, password)
     .then((user) => {
+      idThisUser = user._id;
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
@@ -129,8 +129,8 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.getThisUser = (req, res, next) => {
-  Users.findByOne(emailThisUser)
+module.exports.getThisUser = (res, next) => {
+  Users.findByOne(idThisUser)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
