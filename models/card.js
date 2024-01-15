@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const validator = require('validator');
+// const validator = require('validator');
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -12,7 +12,7 @@ const cardSchema = new mongoose.Schema({
   link: {
     type: String,
     required: [true, 'Поле "link" должно быть заполнено'],
-    validate: validator.isURL(),
+    validate: /^(http(s):\/\/.)[\w\d@:%.+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/,
   },
   // ссылка на модель автора карточки
   owner: {
