@@ -10,10 +10,6 @@ const cardSchema = new mongoose.Schema({
   link: {
     type: String,
     required: [true, 'Поле "link" должно быть заполнено'],
-    validate: {
-      validator: /(http(s){0,}):\/\/(www\.){0,}((a-zA-Z0-9~-\._:\/?#\[]@!$&'\(\)*\+,;=.){2,256}\.){1,}[a-z]{2,6}\b([-a-zA-Z0-9#])/,
-      message: 'Некорректная ссылка',
-    },
   },
   // ссылка на модель автора карточки
   owner: {
@@ -34,5 +30,10 @@ const cardSchema = new mongoose.Schema({
     default: Date.now(),
   },
 }, { versionKey: false });
+
+cardSchema.path('link').validate((val) => {
+  const urlRegex = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
+  return urlRegex.test(val);
+}, 'Invalid URL.');
 
 module.exports = mongoose.model('card', cardSchema);
