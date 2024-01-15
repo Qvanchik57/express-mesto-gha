@@ -36,12 +36,12 @@ module.exports.deleteCardById = async (req, res, next) => {
       if (card.owner.toString() === req.user._id) {
         res.status(200).send(card);
       } else {
-        throw new ForeignError('Удаление чужой карточки невозможно');
+        next(new ForeignError('Удаление чужой карточки невозможно'));
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new ValidationError('Переданы некорректные данные при удалении карточки');
+        next(new ValidationError('Переданы некорректные данные при удалении карточки'));
       } else {
         next(err);
       }
