@@ -111,14 +111,11 @@ module.exports.patchAvatar = async (req, res, next) => {
     });
 };
 
-let idThisUser = '';
-
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   return Users.findUserByCredentials(email, password)
     .then((user) => {
-      idThisUser = user._id;
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
@@ -129,12 +126,9 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.getThisUser = (res, next) => {
-  Users.findByOne(idThisUser)
+module.exports.getThisUser = (req, res, next) => {
+  Users.findById(req.user._id)
     .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Пользователь не найден');
-      }
       res.status(200).send(user);
     })
     .catch(next);
