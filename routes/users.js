@@ -10,9 +10,9 @@ const { userIdValidation, userValidation, avatarValidation } = require('../middl
 
 router.get('/users', getUsers);
 
-router.get('/users/:userId', userIdValidation, getUsersById);
-
 router.get('/users/me', getThisUser);
+
+router.get('/users/:userId', userIdValidation, getUsersById);
 
 router.patch('/users/me', userValidation, patchProfile);
 
