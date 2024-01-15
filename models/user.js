@@ -12,13 +12,13 @@ const userSchema = new mongoose.Schema({
   },
   about: {
     type: String,
-    default: 'Исследователь океанов',
+    default: 'Исследователь',
     minlength: [2, 'Минимальная длина поля "name" - 2'],
     maxlength: [30, 'Максимальная длина поля "name" - 30'],
   },
   avatar: {
     type: String,
-    default: 'chrome://favicon2/?size=24&scaleFactor=1x&showFallbackMonogram=&pageUrl=https%3A%2F%2Fpracticum.yandex.ru%2Fprofile%2Fweb%2F',
+    default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
   },
   email: {
     type: String,
