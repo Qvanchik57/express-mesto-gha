@@ -32,8 +32,6 @@ module.exports.deleteCardById = async (req, res, next) => {
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Передан несуществующий _id карточки');
-      } else if (card.owner.toString() === req.user._id) {
-        res.send(card);
       }
       if (card.owner.toString() === req.user._id) {
         res.status(200).send(card);
@@ -43,7 +41,7 @@ module.exports.deleteCardById = async (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        throw new ValidationError('Переданы некорректные данные при создании карточки');
+        throw new ValidationError('Переданы некорректные данные при удалении карточки');
       } else {
         next(err);
       }
