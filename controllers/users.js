@@ -5,13 +5,16 @@ require('dotenv').config();
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
+const GOOD_REQ = 200;
+const CREATE_REQ = 201;
+
 const ValidationError = require('../errors/validationError');
 const NotFoundError = require('../errors/notFoundError');
 const ConflictError = require('../errors/conflictError');
 
 module.exports.getUsers = async (req, res, next) => {
   await Users.find({})
-    .then((users) => res.status(200).send({ data: users }))
+    .then((users) => res.status(GOOD_REQ).send({ data: users }))
     .catch(next);
 };
 
@@ -21,7 +24,7 @@ module.exports.getUsersById = async (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь с указанным _id не найден');
       }
-      res.status(200).send({ data: user });
+      res.status(GOOD_REQ).send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -47,7 +50,7 @@ module.exports.createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then(() => res.status(201).send({
+    .then(() => res.status(CREATE_REQ).send({
       name, about, avatar, email,
     }))
     .catch((err) => {
@@ -75,7 +78,7 @@ module.exports.patchProfile = async (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь с указанным _id не найден');
       }
-      res.status(200).send(user);
+      res.status(GOOD_REQ).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -100,7 +103,7 @@ module.exports.patchAvatar = async (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь с указанным _id не найден');
       }
-      res.status(200).send(user);
+      res.status(GOOD_REQ).send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -129,7 +132,7 @@ module.exports.login = (req, res, next) => {
 module.exports.getThisUser = (req, res, next) => {
   Users.findById(req.user._id)
     .then((user) => {
-      res.status(200).send(user);
+      res.status(GOOD_REQ).send(user);
     })
     .catch(next);
 };

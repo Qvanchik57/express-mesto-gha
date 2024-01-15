@@ -3,9 +3,12 @@ const ValidationError = require('../errors/validationError');
 const NotFoundError = require('../errors/notFoundError');
 const ForeignError = require('../errors/foreignError');
 
+const GOOD_REQ = 200;
+const CREATE_REQ = 201;
+
 module.exports.getCards = async (req, res, next) => {
   await Cards.find({})
-    .then((cards) => res.status(200).send({ data: cards }))
+    .then((cards) => res.status(GOOD_REQ).send({ data: cards }))
     .catch(next);
 };
 
@@ -17,7 +20,7 @@ module.exports.createCard = async (req, res, next) => {
   const owner = req.user._id;
 
   await Cards.create({ name, link, owner })
-    .then((card) => res.status(201).send({ data: card }))
+    .then((card) => res.status(CREATE_REQ).send({ data: card }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new ValidationError('Переданы некорректные данные при создании карточки'));
@@ -34,7 +37,7 @@ module.exports.deleteCardById = async (req, res, next) => {
         throw new NotFoundError('Передан несуществующий _id карточки');
       }
       if (card.owner.toString() === req.user._id) {
-        res.status(200).send(card);
+        res.status(GOOD_REQ).send(card);
       } else {
         next(new ForeignError('Удаление чужой карточки невозможно'));
       }
@@ -58,7 +61,7 @@ module.exports.likeCard = async (req, res, next) => {
       if (!card) {
         throw new NotFoundError('Передан несуществующий _id карточки');
       }
-      res.status(200).send({ data: card });
+      res.status(GOOD_REQ).send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
