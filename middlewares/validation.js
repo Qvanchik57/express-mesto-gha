@@ -53,7 +53,7 @@ const cardValidation = celebrate({
 });
 
 const cardIdValidation = celebrate({
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     cardId: Joi.string().alphanum().length(24).hex(),
   }),
 });
