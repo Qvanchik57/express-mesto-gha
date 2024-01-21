@@ -42,26 +42,30 @@ module.exports.createUser = (req, res, next) => {
     avatar,
     email,
   } = req.body;
-  bcrypt.hash(req.body.password, 10)
-    .then((hash) => Users.create({
-      name,
-      about,
-      avatar,
-      email,
-      password: hash,
-    }))
-    .then(() => res.status(CREATE_REQ).send({
-      name, about, avatar, email,
-    }))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new ValidationError('Переданы некорректные данные при создании пользователя'));
-      } if (err.code === 11000) {
-        next(new ConflictError('Пользователь уже зарегистрирован'));
-      } else {
-        next(err);
-      }
-    });
+  try {
+    bcrypt.hash(req.body.password, 10)
+      .then((hash) => Users.create({
+        name,
+        about,
+        avatar,
+        email,
+        password: hash,
+      }))
+      .then(() => res.status(CREATE_REQ).send({
+        name, about, avatar, email,
+      }))
+      .catch((err) => {
+        if (err.name === 'ValidationError') {
+          next(new ValidationError('Переданы некорректные данные при создании пользователя'));
+        } if (err.code === 11000) {
+          next(new ConflictError('Пользователь уже зарегистрирован'));
+        } else {
+          next(err);
+        }
+      });
+  } catch (err) {
+    throw new Error('Ошибка!');
+  }
 };
 
 module.exports.patchProfile = async (req, res, next) => {

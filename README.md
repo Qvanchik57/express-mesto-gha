@@ -6,10 +6,10 @@
 
 Адрес репозитория: https://github.com/Qvanchik57/react-mesto-api-full-gha?tab=readme-ov-file
 
-IP-адрес 158.160.141.45;
+IP 158.160.141.45
 
-Frontend https://sergo.students.nomoredomainsmonster.ru;
+Frontend https://sergo.students.nomoredomainsmonster.ru
 
-Backend https://api.sergo.students.nomoredomainsmonster.ru;
+Backend https://api.sergo.students.nomoredomainsmonster.ru
 
 [express-mesto-gha](https://github.com/Qvanchik57/express-mesto-gha.git)
