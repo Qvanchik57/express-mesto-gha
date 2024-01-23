@@ -1,11 +1,11 @@
 const allowedCors = [
   'localhost:3000',
-  'sergo.students.nomoredomainsmonster.ru',
-  'api.sergo.students.nomoredomainsmonster.ru',
-  'http://sergo.students.nomoredomainsmonster.ru',
-  'https://sergo.students.nomoredomainsmonster.ru',
-  'http://api.sergo.students.nomoredomainsmonster.ru',
-  'https://api.sergo.students.nomoredomainsmonster.ru',
+  'sergey.students.nomoredomainsmonster.ru',
+  'api.sergey.students.nomoredomainsmonster.ru',
+  'http://sergey.students.nomoredomainsmonster.ru',
+  'https://sergey.students.nomoredomainsmonster.ru',
+  'http://api.sergey.students.nomoredomainsmonster.ru',
+  'https://api.sergey.students.nomoredomainsmonster.ru',
   'http://51.250.13.155',
   'https://51.250.13.155',
 ];
