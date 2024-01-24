@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
-const myCors = require('./middlewares/cors');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const { login, createUser } = require('./controllers/users');
@@ -23,7 +22,6 @@ const SERVER_ERROR = 500;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-app.use(myCors);
 app.use(helmet());
 app.use(cookieParser());
 
